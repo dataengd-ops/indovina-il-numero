@@ -19,6 +19,21 @@ def confronta(tentativo, segreto):
     return "giusto"
 
 
+def leggi_numero(testo):
+    """Converte il testo in un numero intero tra MINIMO e MASSIMO.
+
+    Restituisce None se il testo non è un numero valido,
+    così il gioco può chiedere di riprovare senza bloccarsi.
+    """
+    try:
+        numero = int(testo)
+    except ValueError:
+        return None
+    if numero < MINIMO or numero > MASSIMO:
+        return None
+    return numero
+
+
 def gioca_partita():
     """Gioca una partita completa e mostra i tentativi usati."""
     # Il computer sceglie il numero segreto (estremi inclusi)
@@ -28,7 +43,11 @@ def gioca_partita():
     print(f"Ho scelto un numero da {MINIMO} a {MASSIMO}. Prova a indovinarlo!")
 
     while True:
-        tentativo = int(input("Il tuo tentativo: "))
+        tentativo = leggi_numero(input("Il tuo tentativo: "))
+        if tentativo is None:
+            # Input non valido: avvisiamo e non contiamo il tentativo
+            print(f"Scrivi un numero intero da {MINIMO} a {MASSIMO}.")
+            continue
         tentativi += 1
 
         risultato = confronta(tentativo, segreto)
