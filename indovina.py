@@ -52,13 +52,27 @@ def gioca_partita():
 
         risultato = confronta(tentativo, segreto)
         if risultato == "giusto":
-            print(f"Bravo! Hai indovinato in {tentativi} tentativi.")
+            parola = "tentativo" if tentativi == 1 else "tentativi"
+            print(f"Bravo! Hai indovinato in {tentativi} {parola}.")
             break
         print(f"Prova con un numero {risultato}.")
 
 
+def vuole_rigiocare(risposta):
+    """Restituisce True se la risposta è un sì (s, si, sì), altrimenti False."""
+    return risposta.strip().lower() in ("s", "si", "sì")
+
+
 def main():
-    gioca_partita()
+    try:
+        while True:
+            gioca_partita()
+            if not vuole_rigiocare(input("Vuoi rigiocare? (s/n) ")):
+                break
+    except (KeyboardInterrupt, EOFError):
+        # Ctrl+C o fine dell'input: usciamo senza mostrare errori
+        print()
+    print("Grazie per aver giocato, a presto!")
 
 
 if __name__ == "__main__":

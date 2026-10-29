@@ -1,4 +1,16 @@
-from indovina import confronta, leggi_numero
+from indovina import confronta, leggi_numero, vuole_rigiocare
+
+
+def test_vuole_rigiocare_si():
+    assert vuole_rigiocare("s")
+    assert vuole_rigiocare(" SI ")
+    assert vuole_rigiocare("sì")
+
+
+def test_vuole_rigiocare_no():
+    assert not vuole_rigiocare("n")
+    assert not vuole_rigiocare("")
+    assert not vuole_rigiocare("forse")
 
 
 def test_leggi_numero_valido():
