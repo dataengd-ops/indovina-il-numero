@@ -4,6 +4,8 @@ import random
 
 MINIMO = 1
 MASSIMO = 100
+# Ogni quanti tentativi sbagliati il gioco propone di arrendersi
+TENTATIVI_PER_RESA = 5
 
 
 def confronta(tentativo, segreto):
@@ -58,11 +60,17 @@ def messaggio_richiesta(facilitata, minimo, massimo):
     return "Il tuo tentativo: "
 
 
+def deve_proporre_resa(sbagliati):
+    """True ogni TENTATIVI_PER_RESA tentativi sbagliati (5, 10, 15, ...)."""
+    return sbagliati > 0 and sbagliati % TENTATIVI_PER_RESA == 0
+
+
 def gioca_partita():
     """Gioca una partita completa e mostra i tentativi usati."""
     # Il computer sceglie il numero segreto (estremi inclusi)
     segreto = random.randint(MINIMO, MASSIMO)
     tentativi = 0
+    sbagliati = 0
 
     facilitata = vuole_rigiocare(input("Attivare la modalità facilitata? (s/n) "))
     # Intervallo in cui può ancora trovarsi il numero
@@ -85,6 +93,12 @@ def gioca_partita():
             break
         print(f"Prova con un numero {risultato}.")
         minimo, massimo = aggiorna_intervallo(minimo, massimo, tentativo, risultato)
+
+        sbagliati += 1
+        if deve_proporre_resa(sbagliati):
+            if vuole_rigiocare(input("Vuoi arrenderti? (s/n) ")):
+                print(f"Il numero era {segreto}.")
+                break
 
 
 def vuole_rigiocare(risposta):

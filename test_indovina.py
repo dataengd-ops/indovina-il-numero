@@ -1,6 +1,7 @@
 from indovina import (
     aggiorna_intervallo,
     confronta,
+    deve_proporre_resa,
     leggi_numero,
     messaggio_richiesta,
     vuole_rigiocare,
@@ -63,3 +64,11 @@ def test_aggiorna_intervallo_non_si_allarga():
 def test_messaggio_richiesta():
     assert messaggio_richiesta(True, 30, 56) == "Scegli un numero (tra 30 e 56): "
     assert messaggio_richiesta(False, 30, 56) == "Il tuo tentativo: "
+
+
+def test_deve_proporre_resa():
+    assert not deve_proporre_resa(0)
+    assert not deve_proporre_resa(4)
+    assert deve_proporre_resa(5)
+    assert not deve_proporre_resa(6)
+    assert deve_proporre_resa(10)
