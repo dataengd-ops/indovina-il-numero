@@ -4,6 +4,8 @@ import random
 
 MINIMO = 1
 MASSIMO = 100
+# Comandi che si possono scrivere al posto di un numero per abbandonare
+COMANDI_ABBANDONO = ("esci", "abbandona", "resa")
 # Ogni quanti tentativi sbagliati il gioco propone di arrendersi
 TENTATIVI_PER_RESA = 5
 
@@ -19,6 +21,11 @@ def confronta(tentativo, segreto):
     if tentativo > segreto:
         return "più basso"
     return "giusto"
+
+
+def e_comando_abbandono(testo):
+    """True se il testo è un comando per abbandonare la partita."""
+    return testo.strip().lower() in COMANDI_ABBANDONO
 
 
 def leggi_numero(testo):
@@ -79,7 +86,12 @@ def gioca_partita():
     print(f"Ho scelto un numero da {MINIMO} a {MASSIMO}. Prova a indovinarlo!")
 
     while True:
-        tentativo = leggi_numero(input(messaggio_richiesta(facilitata, minimo, massimo)))
+        testo = input(messaggio_richiesta(facilitata, minimo, massimo))
+        if e_comando_abbandono(testo):
+            # L'utente abbandona: riveliamo il numero e finisce la partita
+            print(f"Hai abbandonato. Il numero era {segreto}.")
+            break
+        tentativo = leggi_numero(testo)
         if tentativo is None:
             # Input non valido: avvisiamo e non contiamo il tentativo
             print(f"Scrivi un numero intero da {MINIMO} a {MASSIMO}.")

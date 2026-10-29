@@ -2,6 +2,7 @@ from indovina import (
     aggiorna_intervallo,
     confronta,
     deve_proporre_resa,
+    e_comando_abbandono,
     leggi_numero,
     messaggio_richiesta,
     vuole_rigiocare,
@@ -72,3 +73,10 @@ def test_deve_proporre_resa():
     assert deve_proporre_resa(5)
     assert not deve_proporre_resa(6)
     assert deve_proporre_resa(10)
+
+
+def test_comando_abbandono():
+    assert e_comando_abbandono("esci")
+    assert e_comando_abbandono("  ESCI ")
+    assert not e_comando_abbandono("42")
+    assert not e_comando_abbandono("")
