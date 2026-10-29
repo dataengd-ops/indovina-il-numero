@@ -1,4 +1,10 @@
-from indovina import confronta, leggi_numero, vuole_rigiocare
+from indovina import (
+    aggiorna_intervallo,
+    confronta,
+    leggi_numero,
+    messaggio_richiesta,
+    vuole_rigiocare,
+)
 
 
 def test_vuole_rigiocare_si():
@@ -39,3 +45,21 @@ def test_confronta_segreto_piu_basso():
 
 def test_confronta_giusto():
     assert confronta(50, 50) == "giusto"
+
+
+def test_aggiorna_intervallo_esempio():
+    # "più basso di 57" poi "più alto di 29" -> tra 30 e 56
+    minimo, massimo = aggiorna_intervallo(1, 100, 57, "più basso")
+    minimo, massimo = aggiorna_intervallo(minimo, massimo, 29, "più alto")
+    assert (minimo, massimo) == (30, 56)
+
+
+def test_aggiorna_intervallo_non_si_allarga():
+    # Un tentativo fuori dall'intervallo attuale non deve allargarlo
+    assert aggiorna_intervallo(30, 56, 10, "più alto") == (30, 56)
+    assert aggiorna_intervallo(30, 56, 90, "più basso") == (30, 56)
+
+
+def test_messaggio_richiesta():
+    assert messaggio_richiesta(True, 30, 56) == "Scegli un numero (tra 30 e 56): "
+    assert messaggio_richiesta(False, 30, 56) == "Il tuo tentativo: "

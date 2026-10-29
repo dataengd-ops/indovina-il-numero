@@ -34,16 +34,44 @@ def leggi_numero(testo):
     return numero
 
 
+def aggiorna_intervallo(minimo, massimo, tentativo, risultato):
+    """Restringe l'intervallo possibile dopo un tentativo sbagliato.
+
+    Restituisce la coppia (minimo, massimo) aggiornata.
+    """
+    if risultato == "più alto":
+        # Il segreto è maggiore del tentativo: alziamo il minimo
+        minimo = max(minimo, tentativo + 1)
+    elif risultato == "più basso":
+        # Il segreto è minore del tentativo: abbassiamo il massimo
+        massimo = min(massimo, tentativo - 1)
+    return minimo, massimo
+
+
+def messaggio_richiesta(facilitata, minimo, massimo):
+    """Restituisce il messaggio che chiede il tentativo.
+
+    In modalità facilitata mostra l'intervallo in cui si trova il numero.
+    """
+    if facilitata:
+        return f"Scegli un numero (tra {minimo} e {massimo}): "
+    return "Il tuo tentativo: "
+
+
 def gioca_partita():
     """Gioca una partita completa e mostra i tentativi usati."""
     # Il computer sceglie il numero segreto (estremi inclusi)
     segreto = random.randint(MINIMO, MASSIMO)
     tentativi = 0
 
+    facilitata = vuole_rigiocare(input("Attivare la modalità facilitata? (s/n) "))
+    # Intervallo in cui può ancora trovarsi il numero
+    minimo, massimo = MINIMO, MASSIMO
+
     print(f"Ho scelto un numero da {MINIMO} a {MASSIMO}. Prova a indovinarlo!")
 
     while True:
-        tentativo = leggi_numero(input("Il tuo tentativo: "))
+        tentativo = leggi_numero(input(messaggio_richiesta(facilitata, minimo, massimo)))
         if tentativo is None:
             # Input non valido: avvisiamo e non contiamo il tentativo
             print(f"Scrivi un numero intero da {MINIMO} a {MASSIMO}.")
@@ -56,6 +84,7 @@ def gioca_partita():
             print(f"Bravo! Hai indovinato in {tentativi} {parola}.")
             break
         print(f"Prova con un numero {risultato}.")
+        minimo, massimo = aggiorna_intervallo(minimo, massimo, tentativo, risultato)
 
 
 def vuole_rigiocare(risposta):
