@@ -118,7 +118,17 @@ def vuole_rigiocare(risposta):
     return risposta.strip().lower() in ("s", "si", "sì")
 
 
+def mostra_intro():
+    """Stampa una breve presentazione all'avvio del programma."""
+    print("=" * 40)
+    print("   INDOVINA IL NUMERO")
+    print("=" * 40)
+    print("Scrivi 'esci' in qualsiasi momento per abbandonare.")
+    print()
+
+
 def main():
+    mostra_intro()
     try:
         while True:
             gioca_partita()
